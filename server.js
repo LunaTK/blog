@@ -1,6 +1,9 @@
 const express = require('express');
 const next = require('next');
-require('dotenv').config();
+const dev = process.env.NODE_ENV !== 'production';
+if (dev) {
+  require('dotenv').config();
+}
 const {
   ApolloServer,
   gql
@@ -11,7 +14,6 @@ const mongo = new MongoClient(process.env.MONGO_URL, {
   useNewUrlParser: true
 });
 
-const dev = process.env.NODE_ENV !== 'production';
 const app = next({
   dev
 });
