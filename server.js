@@ -83,7 +83,7 @@ app
 
     server.listen(port, err => {
       if (err) throw err;
-      console.log(` > Ready on http: //localhost:3000${apolloServer.graphqlPath}`);
+      console.log(`> Ready on http: //localhost:3000${apolloServer.graphqlPath}`);
     });
   })
   .catch(ex => {

@@ -1,8 +1,10 @@
 import React from 'react';
-import Markdown from 'react-markdown';
+import ReactMarkdown from 'react-markdown';
 
 function Article(props) {
-  return <Markdown>{props.children}</Markdown>;
+  const input = '# This is a header\n\nAnd this is a paragraph';
+  console.log(props.content);
+  return <ReactMarkdown source={props.content} />;
 }
 
 export default Article;

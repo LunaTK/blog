@@ -1,6 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import Article from './Article';
 
 export const allPostsQuery = gql`
   query {
@@ -25,7 +26,8 @@ function Post() {
         } else if (loading) {
           return <div>Loading</div>;
         }
-        return <div>{post[0].title}</div>;
+        console.log(post[0].content);
+        return <Article content={post[0].content} />;
       }}
     </Query>
   );
