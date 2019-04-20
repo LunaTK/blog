@@ -1,0 +1,36 @@
+{
+  "name": "myblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "next dev",
+    "build": "next build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LunaTK/myblog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LunaTK/myblog/issues"
+  },
+  "homepage": "https://github.com/LunaTK/myblog#readme",
+  "dependencies": {
+    "@zeit/next-typescript": "^1.1.1",
+    "express": "^4.16.4",
+    "next": "^8.1.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-markdown": "^4.0.8",
+    "typescript": "^3.4.4"
+  },
+  "devDependencies": {
+    "@types/node": "^11.13.6",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
+    "tslint": "^5.16.0"
+  }
+}
