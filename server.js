@@ -11,12 +11,12 @@ app
   .prepare()
   .then(() => {
     const server = express();
-
+    const port = process.env.PORT || 8080;
     server.get('*', (req, res) => {
       return handle(req, res);
     });
 
-    server.listen(dev ? 3000 : 80, err => {
+    server.listen(port, err => {
       if (err) throw err;
       console.log('> Ready on http://localhost:3000');
     });
