@@ -5,6 +5,7 @@ const {
   ApolloServer,
   gql
 } = require('apollo-server-express');
+global.fetch = require('node-fetch');
 const MongoClient = require('mongodb').MongoClient;
 const mongo = new MongoClient(process.env.MONGO_URL, {
   useNewUrlParser: true
@@ -18,22 +19,34 @@ const handle = app.getRequestHandler();
 
 const typeDefs = gql `
   type Query {
-    article: [Article]
+    post: [Post]
   }
-  type Article {
+  type Post {
     title: String
+    content: String
+    date: String
+    comments: [Comment]
+  }
+  type Comment {
+    author: String
     content: String
   }
 `;
 
 const resolvers = {
   Query: {
-    article: () =>
-      mongo.db('blog').collection('article').find().toArray(),
+    post: () =>
+      mongo.db('blog').collection('post').find().toArray(),
   },
-  Article: {
-    title: (article) => article.title,
-    content: (article) => article.content
+  Post: {
+    title: (post) => post.title,
+    content: (post) => post.content,
+    date: (post) => post.date,
+    comments: (post) => post.comments
+  },
+  Comment: {
+    author: (comment) => comment.author,
+    content: (comment) => comment.content
   }
 };
 
@@ -54,6 +67,15 @@ app
       app: server
     });
     const port = process.env.PORT || 3000;
+
+    server.get('/post/:id', (req, res) => {
+      const actualPage = '/post'
+      const queryParams = {
+        title: req.params.id
+      }
+      app.render(req, res, actualPage, queryParams)
+    })
+
     server.get('*', (req, res) => {
       return handle(req, res);
     });

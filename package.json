@@ -19,22 +19,24 @@
   },
   "homepage": "https://github.com/LunaTK/myblog#readme",
   "dependencies": {
-    "@zeit/next-typescript": "^1.1.1",
+    "apollo-boost": "^0.3.1",
     "apollo-server-express": "^2.4.8",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "graphql": "^14.2.1",
+    "graphql-tag": "^2.10.1",
+    "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.2.3",
     "next": "^8.1.0",
+    "next-apollo": "^2.0.9",
+    "node-fetch": "^2.3.0",
     "react": "^16.8.6",
+    "react-apollo": "^2.5.4",
     "react-dom": "^16.8.6",
-    "react-markdown": "^4.0.8",
-    "typescript": "^3.4.4"
+    "react-markdown": "^4.0.8"
   },
   "devDependencies": {
-    "@types/node": "^11.13.6",
-    "@types/react": "^16.8.14",
-    "@types/react-dom": "^16.8.4",
-    "tslint": "^5.16.0"
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.12.4"
   }
 }
