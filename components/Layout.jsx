@@ -1,6 +1,5 @@
 import React from 'react';
 import Navbar from './Navbar';
-// import './common.css';
 export default function Layout(props) {
   return (
     <div style={{ display: 'flex' }}>
