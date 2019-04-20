@@ -8,7 +8,6 @@ const {
   ApolloServer,
   gql
 } = require('apollo-server-express');
-global.fetch = require('node-fetch');
 const MongoClient = require('mongodb').MongoClient;
 const mongo = new MongoClient(process.env.MONGO_URL, {
   useNewUrlParser: true
