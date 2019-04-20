@@ -1,5 +1,9 @@
 const express = require('express');
 const next = require('next');
+const {
+  ApolloServer,
+  gql
+} = require('apollo-server-express');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({
@@ -7,10 +11,31 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
+const typeDefs = gql `
+  type Query {
+    hello: String
+  }
+`;
+
+const resolvers = {
+  Query: {
+    hello: () => 'Hello world!',
+  },
+};
+
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers
+});
+
+
 app
   .prepare()
   .then(() => {
     const server = express();
+    apolloServer.applyMiddleware({
+      app: server
+    });
     const port = process.env.PORT || 8080;
     server.get('*', (req, res) => {
       return handle(req, res);
