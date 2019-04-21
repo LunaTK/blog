@@ -1,82 +1,90 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
+//#efeeee
+interface Menu {
+  title: string;
+  href: string;
+}
 
 function Navbar() {
+  const menus: Menu[] = [
+    { title: 'About', href: 'https://lunatk.github.io' },
+    { title: 'Posts', href: '/post' }
+  ];
   return (
     <nav>
-      <div id="upper">
-        <div id="title">돌태근의 블로그</div>
-        <img
-          id="avatar"
-          width="50"
-          src="https://avatars2.githubusercontent.com/u/15868333?s=460&v=4"
-        />
+      <div id="nav-content">
+        <div className="hamburger">
+          <div className="line" />
+          <div className="line" />
+          <div className="line" />
+        </div>
+
+        {menus.map(m => (
+          <Link href={m.href} key={m.title}>
+            <a className="menu">{m.title} </a>
+          </Link>
+        ))}
       </div>
 
-      <Link href="/about">
-        <a className="category">About</a>
-      </Link>
-      <Link href="/post">
-        <a className="category">Posts</a>
-      </Link>
-      <Link href="/tours">
-        <a className="category">Tours</a>
-      </Link>
-
       <style jsx>{`
-        color: #b2bdc9;
-        text-decoration: none;
-        nav {
-          background-color: #33363d;
-          display: inline-flex;
-          flex-direction: column;
-          align-items: center;
-          box-shadow: 0 0 3px black;
-          transition: width 2s ease-in;
-          min-height: 100vh;
-        }
-
-        @media (min-width: 1024px) {
-          nav {
-            min-width: 20em;
-            height: 100%;
-            min-height: 100vh;
-          }
-        }
-        @media (min-width: 400px) and (max-width: 1023px) {
-          nav {
-            opacity: 0;
-            width: 0;
-          }
-        }
-
-        #avatar {
-          position: absolute;
-          border-radius: 50%;
-          width: 50%;
-          bottom: 0;
-          left: 0;
-          transform: translate(50%, 50%);
-        }
-
-        #upper {
+        #nav-content {
+          font-family: 'Quicksand', sans-serif;
+          max-width: 768px;
+          margin: auto;
           position: relative;
-          background-color: #efeeee;
-          height: 200px;
+          height: 100%;
           width: 100%;
-          margin-bottom: 100px;
+          display: flex;
+          // flex-direction: row-reverse;
+          align-items: center;
+          padding: 0 5px;
+        }
+        nav {
+          width: 100%;
+          height: 60px;
+          box-shadow: 0 0px 1px #404040;
         }
 
-        #title {
-          color: black;
-          font-size: 2em;
-          text-align: center;
-          margin-top: 20%;
+        .hamburger {
+          position: absolute;
+          right: 20px;
+          cursor: pointer;
         }
 
-        a.category {
-          font-size: 24px;
+        .hamburger .line {
+          height: 3px;
+          width: 30px;
+          background-color: black;
+          margin: 5px;
+        }
+
+        a {
+          color: #404040;
+          text-decoration: none;
+          margin: 0 40px 0 0;
+          transition: transform 0.3s, text-shadow 0.3s;
+        }
+
+        a:hover {
+          transform: scale(1.1);
+          text-shadow: 0px 1px 10px #00000077;
+        }
+
+        @media screen and (min-width: 768px) {
+          .hamburger {
+            display: none;
+            pointer-events: none;
+          }
+        }
+
+        //not pc
+        @media screen and (max-width: 767px) {
+          .menu {
+            display: none;
+            pointer-events: none;
+          }
         }
       `}</style>
     </nav>

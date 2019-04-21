@@ -3,12 +3,12 @@ import Navbar from './Navbar';
 
 export default function Layout(props: any) {
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <Navbar />
       <article id="article">{props.children}</article>
       <style jsx global>
         {`
-          @import url('https://fonts.googleapis.com/css?family=Gugi');
+          @import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500');
 
           body {
             margin: 0;
@@ -18,8 +18,9 @@ export default function Layout(props: any) {
       <style jsx>
         {`
           #article {
-            flex: 1;
             padding: 10px;
+            max-width: 768px;
+            margin: auto;
           }
         `}
       </style>
