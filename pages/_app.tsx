@@ -3,8 +3,13 @@ import React from 'react';
 import withApolloClient from '../lib/with-apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
+import { ApolloClient, NormalizedCacheObject } from 'apollo-boost';
 
-class MyApp extends App {
+export interface Props {
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+}
+
+class MyApp extends App<Props> {
   render() {
     const { Component, pageProps, apolloClient } = this.props;
     return (
@@ -15,10 +20,10 @@ class MyApp extends App {
             content="width=device-width, initial-scale=1.0"
             key="viewport"
           />
-        </Head>
+        </Head>{' '}
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
-        </ApolloProvider>
+          <Component {...pageProps} />{' '}
+        </ApolloProvider>{' '}
       </Container>
     );
   }

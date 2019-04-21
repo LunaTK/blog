@@ -21,6 +21,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@zeit/next-css": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
     "apollo-boost": "^0.3.1",
     "apollo-server-express": "^2.4.8",
     "dotenv": "^7.0.0",
@@ -40,6 +41,10 @@
     "typeface-roboto": "0.0.54"
   },
   "devDependencies": {
+    "@types/next": "^8.0.3",
+    "@types/react": "^16.8.14",
+    "@types/react-dom": "^16.8.4",
+    "@types/styled-jsx": "^2.2.8",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-react": "^7.12.4"

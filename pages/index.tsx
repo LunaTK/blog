@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import { withRouter } from 'next/router';
-class index extends Component {
+
+class index extends React.Component {
   render() {
     return (
       <Layout>
