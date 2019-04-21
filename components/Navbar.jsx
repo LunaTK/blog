@@ -5,15 +5,25 @@ import { withRouter } from 'next/router';
 function Navbar() {
   return (
     <nav>
+      <div id="upper">
+        <div id="title">돌태근의 블로그</div>
+        <img
+          id="avatar"
+          width="50"
+          src="https://avatars2.githubusercontent.com/u/15868333?s=460&v=4"
+        />
+      </div>
+
       <Link href="/about">
-        <a>About</a>
+        <a className="category">About</a>
       </Link>
       <Link href="/post">
-        <a>Posts</a>
+        <a className="category">Posts</a>
       </Link>
       <Link href="/tours">
-        <a>Tours</a>
+        <a className="category">Tours</a>
       </Link>
+
       <style jsx>{`
         color: #b2bdc9;
         text-decoration: none;
@@ -24,6 +34,35 @@ function Navbar() {
           align-items: center;
           min-width: 20em;
           height: 100vh;
+          box-shadow: 0 0 3px black;
+        }
+
+        #avatar {
+          position: absolute;
+          border-radius: 50%;
+          width: 50%;
+          bottom: 0;
+          left: 0;
+          transform: translate(50%, 50%);
+        }
+
+        #upper {
+          position: relative;
+          background-color: #efeeee;
+          height: 200px;
+          width: 100%;
+          margin-bottom: 100px;
+        }
+
+        #title {
+          color: black;
+          font-size: 2em;
+          text-align: center;
+          margin-top: 20%;
+        }
+
+        a.category {
+          font-size: 24px;
         }
       `}</style>
     </nav>

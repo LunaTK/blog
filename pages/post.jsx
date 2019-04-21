@@ -4,11 +4,10 @@ import Layout from '../components/Layout';
 
 function post() {
   return (
-    <div>
+    <Layout>
       <div>This is post page</div>
-      <Layout />
       <Post />
-    </div>
+    </Layout>
   );
 }
 

@@ -7,6 +7,8 @@ export default function Layout(props) {
       <article id="article">{props.children}</article>
       <style jsx global>
         {`
+          @import url('https://fonts.googleapis.com/css?family=Gugi');
+
           body {
             margin: 0;
           }
@@ -16,7 +18,7 @@ export default function Layout(props) {
         {`
           #article {
             flex: 1;
-            padding: 1em;
+            padding: 10px;
           }
         `}
       </style>
