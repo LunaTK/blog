@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 function post() {
   return (
     <Layout>
-      <div>This is post page</div>
+      <h1>포스트 에디터 페이지</h1>
       <Post />
     </Layout>
   );

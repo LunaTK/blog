@@ -29,7 +29,6 @@ function Post() {
         }
         return (
           <div>
-            <Article content={post[0].content} />
             <PostEditor />
           </div>
         );
