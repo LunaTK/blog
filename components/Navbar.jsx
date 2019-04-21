@@ -32,9 +32,23 @@ function Navbar() {
           display: inline-flex;
           flex-direction: column;
           align-items: center;
-          min-width: 20em;
-          height: 100vh;
           box-shadow: 0 0 3px black;
+          transition: width 2s ease-in;
+          min-height: 100vh;
+        }
+
+        @media (min-width: 1024px) {
+          nav {
+            min-width: 20em;
+            height: 100%;
+            min-height: 100vh;
+          }
+        }
+        @media (min-width: 400px) and (max-width: 1023px) {
+          nav {
+            opacity: 0;
+            width: 0;
+          }
         }
 
         #avatar {
