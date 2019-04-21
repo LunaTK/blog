@@ -25,9 +25,11 @@
     "apollo-server-express": "^2.4.8",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
+    "for-editor": "0.0.13",
     "graphql": "^14.2.1",
     "graphql-tag": "^2.10.1",
     "isomorphic-unfetch": "^3.0.0",
+    "lodash": "^4.17.11",
     "mongodb": "^3.2.3",
     "next": "^8.1.0",
     "next-apollo": "^2.0.9",
@@ -35,8 +37,6 @@
     "react-apollo": "^2.5.4",
     "react-dom": "^16.8.6",
     "react-markdown": "^4.0.8",
-    "react-simplemde-v1": "^2.0.1",
-    "simplemde": "^1.11.2",
     "typeface-roboto": "0.0.54"
   },
   "devDependencies": {

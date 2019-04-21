@@ -1,34 +1,29 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import dynamic from 'next/dynamic';
-import 'simplemde/dist/simplemde.min.css';
 
-const ISimpleMDE = dynamic(() => import('react-simplemde-v1'), {
+const Editor = dynamic(() => import('for-editor'), {
   ssr: false
 });
 
-function PostEditor() {
-  const option = {};
+class PostEditor extends Component {
+  constructor() {
+    super();
+    this.state = {
+      value: ''
+    };
+  }
 
-  const onReady = function(instance) {
-    console.log(instance.value());
-  };
+  handleChange(value) {
+    this.setState({
+      value
+    });
+  }
 
-  const onEvents = {
-    change: function() {
-      // the 'this' variable can get SimpleMDE instance
-      console.log(this.value());
-    }
-  };
-
-  return (
-    <ISimpleMDE
-      option={option}
-      text={'Hello World!!!'}
-      onReady={onReady}
-      onEvents={onEvents}
-    />
-  );
+  render() {
+    const { value } = this.state;
+    return <Editor value={value} onChange={this.handleChange.bind(this)} />;
+  }
 }
 
 export default PostEditor;
