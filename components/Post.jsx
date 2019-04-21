@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Article from './Article';
+import PostEditor from './PostEditor';
 
 export const allPostsQuery = gql`
   query {
@@ -26,8 +27,12 @@ function Post() {
         } else if (loading) {
           return <div>Loading</div>;
         }
-        console.log(post[0].content);
-        return <Article content={post[0].content} />;
+        return (
+          <div>
+            <Article content={post[0].content} />
+            <PostEditor />
+          </div>
+        );
       }}
     </Query>
   );
