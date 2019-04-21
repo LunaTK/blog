@@ -40,6 +40,7 @@ function Navbar() {
           // flex-direction: row-reverse;
           align-items: center;
           padding: 0 5px;
+          box-sizing: border-box;
         }
         nav {
           width: 100%;
@@ -49,7 +50,7 @@ function Navbar() {
 
         .hamburger {
           position: absolute;
-          right: 20px;
+          right: 10px;
           cursor: pointer;
         }
 
