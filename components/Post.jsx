@@ -6,7 +6,7 @@ import PostEditor from './PostEditor';
 
 export const allPostsQuery = gql`
   query {
-    post {
+    posts {
       title
       content
       date

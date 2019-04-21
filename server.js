@@ -20,7 +20,7 @@ const handle = app.getRequestHandler();
 
 const typeDefs = gql `
   type Query {
-    post: [Post]
+    posts: [Post]
   }
   type Post {
     title: String
@@ -36,18 +36,18 @@ const typeDefs = gql `
 
 const resolvers = {
   Query: {
-    post: () =>
+    posts: () =>
       mongo.db('blog').collection('post').find().toArray(),
   },
   Post: {
-    title: (post) => post.title,
-    content: (post) => post.content,
-    date: (post) => post.date,
-    comments: (post) => post.comments
+    // title: (post) => post.title,
+    // content: (post) => post.content,
+    // date: (post) => post.date,
+    // comments: (post) => post.comments
   },
   Comment: {
-    author: (comment) => comment.author,
-    content: (comment) => comment.content
+    // author: (comment) => comment.author,
+    // content: (comment) => comment.content
   }
 };
 
