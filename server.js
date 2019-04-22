@@ -24,6 +24,8 @@ const handle = app.getRequestHandler();
 const typeDefs = gql `
   type Query {
     posts(skip: Int = 0, limit:Int = 10): [Post]
+
+    post(id: Int!): Post
   }
   type Post {
     title: String
@@ -49,8 +51,15 @@ const resolvers = {
         .skip(skip)
         .limit(limit)
         .toArray();
-    }
+    },
 
+    post: (root, args) => {
+      console.log("post resolved");
+      return mongo.db('blog').collection('post')
+        .findOne({
+          _id: args.id
+        })
+    }
   },
   Post: {},
   Comment: {}
@@ -77,7 +86,7 @@ app
     server.get('/post/:id', (req, res) => {
       const actualPage = '/post'
       const queryParams = {
-        title: req.params.id
+        id: req.params.id
       }
       app.render(req, res, actualPage, queryParams)
     })

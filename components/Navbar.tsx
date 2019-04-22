@@ -27,7 +27,6 @@ function Navbar() {
           </Link>
         ))}
       </div>
-
       <style jsx>{`
         #nav-content {
           font-family: 'Quicksand', sans-serif;
@@ -44,19 +43,19 @@ function Navbar() {
         }
         nav {
           width: 100%;
-          height: 60px;
+          height: 50px;
           box-shadow: 0 0px 1px #404040;
         }
 
         .hamburger {
           position: absolute;
-          right: 10px;
+          right: 8px;
           cursor: pointer;
         }
 
         .hamburger .line {
-          height: 3px;
-          width: 30px;
+          height: 1px;
+          width: 25px;
           background-color: black;
           margin: 5px;
         }

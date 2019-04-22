@@ -1,7 +1,9 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-
-const { useState, Component } = React;
+import { Query, ApolloConsumer, withApollo } from 'react-apollo';
+import gql from 'graphql-tag';
+const { useState, useEffect } = React;
+import Error from 'next/error';
 
 export interface ForEditorProps {
   placeholder: string;
@@ -15,14 +17,46 @@ const ForEditor = dynamic<ForEditorProps>(() => import('for-editor'), {
   ssr: false
 });
 
-export default function PostEditor() {
-  const [value, setValue] = useState('');
-  return (
-    <ForEditor
-      placeholder="Markdown here"
-      value={value}
-      onChange={setValue}
-      onSave={() => alert(value)}
-    />
-  );
-}
+// class PostQuery extends Query<any, any> {}
+const PostEditor = props => {
+  const { postId, client } = props;
+  const [post, setPost] = useState<any>(null);
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const postQuery = gql`
+    query {
+      post(id: ${postId}) {
+        title
+        content
+      }
+    }
+  `;
+  useEffect(() => {
+    client
+      .query({
+        query: postQuery
+      })
+      .then(({ data: { post } }) => {
+        setPost(post);
+        if (post) {
+          setContent(post.content);
+          setTitle(post.title);
+        }
+      });
+  }, []);
+
+  if (post) {
+    return (
+      <ForEditor
+        placeholder=""
+        value={content}
+        onChange={setContent}
+        onSave={() => alert(content)}
+      />
+    );
+  } else {
+    return <Error statusCode={404} />;
+  }
+};
+
+export default withApollo(PostEditor);
