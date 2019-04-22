@@ -1,6 +1,9 @@
 const express = require('express');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
+const {
+  graphqlMongodbProjection
+} = require('graphql-mongodb-projection');
 if (dev) {
   require('dotenv').config();
 }
@@ -20,7 +23,7 @@ const handle = app.getRequestHandler();
 
 const typeDefs = gql `
   type Query {
-    posts: [Post]
+    posts(skip: Int = 0, limit:Int = 10): [Post]
   }
   type Post {
     title: String
@@ -36,19 +39,21 @@ const typeDefs = gql `
 
 const resolvers = {
   Query: {
-    posts: () =>
-      mongo.db('blog').collection('post').find().toArray(),
+    posts: (root, args, ctx, info) => {
+      const {
+        skip,
+        limit
+      } = args;
+      return mongo.db('blog').collection('post')
+        .find({}, graphqlMongodbProjection(info))
+        .skip(skip)
+        .limit(limit)
+        .toArray();
+    }
+
   },
-  Post: {
-    // title: (post) => post.title,
-    // content: (post) => post.content,
-    // date: (post) => post.date,
-    // comments: (post) => post.comments
-  },
-  Comment: {
-    // author: (comment) => comment.author,
-    // content: (comment) => comment.content
-  }
+  Post: {},
+  Comment: {}
 };
 
 const apolloServer = new ApolloServer({

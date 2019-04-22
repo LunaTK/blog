@@ -47,6 +47,7 @@
     "@types/styled-jsx": "^2.2.8",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "graphql-mongodb-projection": "^1.1.1"
   }
 }
