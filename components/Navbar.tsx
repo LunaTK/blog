@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
+import './hamburgers-settings.scss';
+
 //#efeeee
 interface Menu {
   title: string;
@@ -15,11 +17,11 @@ function Navbar() {
   return (
     <nav>
       <div id="nav-content">
-        <div className="hamburger">
-          <div className="line" />
-          <div className="line" />
-          <div className="line" />
-        </div>
+        <button className="hamburger hamburger--collapse" type="button">
+          <span className="hamburger-box">
+            <span className="hamburger-inner" />
+          </span>
+        </button>
 
         {menus.map(m => (
           <Link href={m.href} key={m.title}>
@@ -49,15 +51,8 @@ function Navbar() {
 
         .hamburger {
           position: absolute;
-          right: 8px;
+          right: 2px;
           cursor: pointer;
-        }
-
-        .hamburger .line {
-          height: 1px;
-          width: 25px;
-          background-color: black;
-          margin: 5px;
         }
 
         a {

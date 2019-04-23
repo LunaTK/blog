@@ -1,14 +1,15 @@
 import * as React from 'react';
-import Post from '../components/Post';
 import Layout from '../components/Layout';
+import { withRouter } from 'next/router';
+import PostEditor from '../components/PostEditor';
 
-function post() {
+const post = withRouter(props => {
   return (
     <Layout>
       <h1>포스트 에디터 페이지</h1>
-      <Post />
+      <PostEditor postId={props.router!.query!.id} />
     </Layout>
   );
-}
+});
 
 export default post;

@@ -14,16 +14,14 @@ export const allPostsQuery = gql`
     posts {
       title
       content
-      date
-      comments {
-        author
-        content
-      }
     }
   }
 `;
 
-function Post() {
+function Post(props) {
+  const postId = props.postId;
+  return <PostEditor postId={postId} />;
+  /*
   return (
     <AllPostQuery query={allPostsQuery}>
       {({ loading, error, data: { posts } }) => {
@@ -35,12 +33,13 @@ function Post() {
         console.log(posts);
         return (
           <div>
-            <PostEditor />
+            <PostEditor postId={postId} post={posts[0]} />
           </div>
         );
       }}
     </AllPostQuery>
   );
+  */
 }
 
 export default Post;
