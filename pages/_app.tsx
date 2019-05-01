@@ -9,12 +9,13 @@ export interface Props {
   apolloClient: ApolloClient<NormalizedCacheObject>;
 }
 
-class MyApp extends App<Props> {
+class MyApp extends App {
   render() {
     const { Component, pageProps, apolloClient } = this.props;
     return (
       <Container>
         <Head>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.2.10/webcomponents-bundle.js" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"

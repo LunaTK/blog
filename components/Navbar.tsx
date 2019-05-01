@@ -1,15 +1,15 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { withRouter } from 'next/router';
 import './hamburgers-settings.scss';
 
-//#efeeee
 interface Menu {
   title: string;
   href: string;
 }
 
 function Navbar() {
+  const [menuVisible, setMenuVisible] = useState(false);
   const menus: Menu[] = [
     { title: 'About', href: 'https://lunatk.github.io' },
     { title: 'Posts', href: '/post' }
@@ -17,17 +17,30 @@ function Navbar() {
   return (
     <nav>
       <div id="nav-content">
-        <button className="hamburger hamburger--collapse" type="button">
+        <button
+          onClick={() => {
+            setMenuVisible(!menuVisible);
+          }}
+          className={`hamburger hamburger--collapse ${
+            menuVisible ? 'is-active' : ''
+          }`}
+          type="button"
+        >
           <span className="hamburger-box">
             <span className="hamburger-inner" />
           </span>
         </button>
-
-        {menus.map(m => (
-          <Link href={m.href} key={m.title}>
-            <a className="menu">{m.title} </a>
-          </Link>
-        ))}
+        <div
+          id="menu-box"
+          style={{ visibility: menuVisible ? 'visible' : 'hidden' }}
+          className={`${menuVisible ? 'open' : ''}`}
+        >
+          {menus.map(m => (
+            <Link href={m.href} key={m.title}>
+              <a className="menu">{m.title} </a>
+            </Link>
+          ))}
+        </div>
       </div>
       <style jsx>{`
         #nav-content {
@@ -37,12 +50,18 @@ function Navbar() {
           position: relative;
           height: 100%;
           width: 100%;
-          display: flex;
-          // flex-direction: row-reverse;
           align-items: center;
           padding: 0 5px;
           box-sizing: border-box;
         }
+
+        #menu-box {
+          height: 100%;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(100px, max-content));
+          align-items: center;
+        }
+
         nav {
           width: 100%;
           height: 50px;
@@ -51,8 +70,9 @@ function Navbar() {
 
         .hamburger {
           position: absolute;
-          right: 2px;
+          right: 0px;
           cursor: pointer;
+          z-index: 10;
         }
 
         a {
@@ -76,9 +96,29 @@ function Navbar() {
 
         //not pc
         @media screen and (max-width: 767px) {
-          .menu {
-            display: none;
-            pointer-events: none;
+          #menu-box {
+            background: white;
+            position: fixed;
+            display: grid;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: center;
+            width: 100%;
+            transition: clip-path 1s ease-out;
+            clip-path: circle(100px at 90% 10%);
+            -webkit-clip-path: circle(100px at 90% 10%);
+          }
+
+          #menu-box.open {
+            clip-path: circle(1000px at 90% 10%);
+            -webkit-clip-path: circle(1000px at 90% 10%);
+          }
+
+          a {
+            margin: 0;
           }
         }
       `}</style>
