@@ -12,7 +12,7 @@ function Navbar() {
   const [menuVisible, setMenuVisible] = useState(false);
   const menus: Menu[] = [
     { title: 'About', href: 'https://lunatk.github.io' },
-    { title: 'Posts', href: '/post' }
+    { title: 'Posts', href: '/posts' }
   ];
   return (
     <nav>
@@ -30,11 +30,7 @@ function Navbar() {
             <span className="hamburger-inner" />
           </span>
         </button>
-        <div
-          id="menu-box"
-          style={{ visibility: menuVisible ? 'visible' : 'hidden' }}
-          className={`${menuVisible ? 'open' : ''}`}
-        >
+        <div id="menu-box" className={`${menuVisible ? 'open' : ''}`}>
           {menus.map(m => (
             <Link href={m.href} key={m.title}>
               <a className="menu">{m.title} </a>
@@ -110,9 +106,11 @@ function Navbar() {
             transition: clip-path 1s ease-out;
             clip-path: circle(100px at 90% 10%);
             -webkit-clip-path: circle(100px at 90% 10%);
+            visibility: hidden;
           }
 
           #menu-box.open {
+            visibility: visible;
             clip-path: circle(1000px at 90% 10%);
             -webkit-clip-path: circle(1000px at 90% 10%);
           }
