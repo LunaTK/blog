@@ -9,6 +9,7 @@ export interface Props {
   apolloClient: ApolloClient<NormalizedCacheObject>;
 }
 
+// TODO : Apollo Client is not always required. Use it individually.
 class MyApp extends App {
   render() {
     const { Component, pageProps, apolloClient } = this.props;

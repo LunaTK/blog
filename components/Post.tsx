@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import PostEditor from './PostEditor';
+import Error from 'next/error';
 
 /**
  * Typing Apollo
  * https://www.apollographql.com/docs/react/recipes/static-typing
  */
-class AllPostQuery extends Query<any, any> {}
-
-export const allPostsQuery = gql`
-  query {
-    posts {
+export const postQuery = gql`
+  query Post($pid: Int!) {
+    post(id: $pid) {
       title
       content
     }
@@ -19,27 +17,26 @@ export const allPostsQuery = gql`
 `;
 
 function Post(props) {
-  const postId = props.postId;
-  return <PostEditor postId={postId} />;
-  /*
+  const pid = Number(props.postId);
   return (
-    <AllPostQuery query={allPostsQuery}>
-      {({ loading, error, data: { posts } }) => {
+    <Query query={postQuery} variables={{ pid }}>
+      {({ loading, error, data: { post } }) => {
         if (error) {
           return <div>Error!</div>;
         } else if (loading) {
           return <div>Loading</div>;
+        } else if (post) {
+          return (
+            <div>
+              <h1>{post.title}</h1>
+              <p>{post.content}</p>
+            </div>
+          );
         }
-        console.log(posts);
-        return (
-          <div>
-            <PostEditor postId={postId} post={posts[0]} />
-          </div>
-        );
+        return <Error statusCode={404} />;
       }}
-    </AllPostQuery>
+    </Query>
   );
-  */
 }
 
 export default Post;
