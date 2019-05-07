@@ -1,9 +1,18 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { Query, ApolloConsumer, withApollo } from 'react-apollo';
+// import { Query, ApolloConsumer, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-const { useState, useEffect } = React;
 import Error from 'next/error';
+import { Post } from './Post';
+import { useState } from 'react';
+import { Mutation } from 'react-apollo';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import withMobileDialog from '@material-ui/core/withMobileDialog';
 
 export interface ForEditorProps {
   placeholder: string;
@@ -12,6 +21,17 @@ export interface ForEditorProps {
   onSave: () => any;
 }
 
+const UPDATE_POST = gql`
+  mutation updatePost($post: PostI!) {
+    upsertPost(post: $post) {
+      modifiedCount
+      upsertedCount
+    }
+  }
+`;
+
+class UpdatePostMutation extends Mutation<any, any> {}
+
 // https://github.com/kkfor/for-editor
 const ForEditor = dynamic<ForEditorProps>(() => import('for-editor'), {
   ssr: false
@@ -19,44 +39,66 @@ const ForEditor = dynamic<ForEditorProps>(() => import('for-editor'), {
 
 // class PostQuery extends Query<any, any> {}
 const PostEditor = props => {
-  const { postId, client } = props;
-  const [post, setPost] = useState<any>(null);
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-  const postQuery = gql`
-    query {
-      post(id: ${postId}) {
-        title
-        content
-      }
-    }
-  `;
-  useEffect(() => {
-    client
-      .query({
-        query: postQuery
-      })
-      .then(({ data: { post } }) => {
-        setPost(post);
-        if (post) {
-          setContent(post.content);
-          setTitle(post.title);
-        }
-      });
-  }, []);
-
+  const post: Post = props.post;
   if (post) {
+    const [content, setContent] = useState(post.content);
+    const [title, setTitle] = useState(post.title);
+    const [dialog, setDialog] = useState(false);
     return (
-      <ForEditor
-        placeholder=""
-        value={content}
-        onChange={setContent}
-        onSave={() => alert(content)}
-      />
+      <UpdatePostMutation mutation={UPDATE_POST}>
+        {(upsertPost, { data }) => (
+          <>
+            <ForEditor
+              placeholder=""
+              value={content}
+              onChange={setContent}
+              onSave={() => {
+                setDialog(true);
+              }}
+            />
+            <Dialog
+              fullScreen={false}
+              open={dialog}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogTitle id="responsive-dialog-title">
+                {'Update post?'}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  The post will be updated. It cannot be undo.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    setDialog(false);
+                  }}
+                  color="secondary"
+                >
+                  No
+                </Button>
+                <Button
+                  onClick={() => {
+                    upsertPost({
+                      variables: { post: { _id: post._id, title, content } }
+                    });
+                    setDialog(false);
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Yes
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>
+        )}
+      </UpdatePostMutation>
     );
   } else {
     return <Error statusCode={404} />;
   }
 };
 
-export default withApollo(PostEditor);
+export default PostEditor;

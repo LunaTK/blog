@@ -2,11 +2,19 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
+import ReactMarkdown from 'react-markdown';
 
 /**
  * Typing Apollo
  * https://www.apollographql.com/docs/react/recipes/static-typing
  */
+
+export interface Post {
+  _id: number;
+  title: string;
+  content: string;
+}
+
 export const postQuery = gql`
   query Post($pid: Int!) {
     post(id: $pid) {
@@ -16,10 +24,12 @@ export const postQuery = gql`
   }
 `;
 
+class PostQuery extends Query<any, any> {}
+
 function Post(props) {
   const pid = Number(props.postId);
   return (
-    <Query query={postQuery} variables={{ pid }}>
+    <PostQuery query={postQuery} variables={{ pid }}>
       {({ loading, error, data: { post } }) => {
         if (error) {
           return <div>Error!</div>;
@@ -29,13 +39,13 @@ function Post(props) {
           return (
             <div>
               <h1>{post.title}</h1>
-              <p>{post.content}</p>
+              <ReactMarkdown source={post.content} />
             </div>
           );
         }
         return <Error statusCode={404} />;
       }}
-    </Query>
+    </PostQuery>
   );
 }
 

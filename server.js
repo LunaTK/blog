@@ -27,6 +27,14 @@ const typeDefs = gql `
 
     post(id: Int!): Post
   }
+  input PostI {
+    _id: Int!
+    title: String!
+    content: String!
+  }
+  type Mutation {
+    upsertPost(post: PostI!): UpsertResult
+  }
   type Post {
     title: String
     content: String
@@ -37,6 +45,10 @@ const typeDefs = gql `
   type Comment {
     author: String
     content: String
+  }
+  type UpsertResult {
+    modifiedCount: Int
+    upsertedCount: Int
   }
 `;
 
@@ -55,11 +67,29 @@ const resolvers = {
     },
 
     post: (root, args) => {
-      console.log("post resolved");
       return mongo.db('blog').collection('post')
         .findOne({
           _id: args.id
         })
+    }
+  },
+  Mutation: {
+    upsertPost: async (_, {
+      post
+    }) => {
+      return mongo.db('blog').collection('post').updateOne({
+        _id: post._id
+      }, {
+        $set: post
+      }, {
+        upsert: true
+      }).then(({
+        modifiedCount,
+        upsertedCount
+      }) => {
+        modifiedCount,
+        upsertedCount
+      });
     }
   },
   Post: {},
@@ -86,6 +116,14 @@ app
 
     server.get('/post/:id', (req, res) => {
       const actualPage = '/post'
+      const queryParams = {
+        id: req.params.id
+      }
+      app.render(req, res, actualPage, queryParams)
+    })
+
+    server.get('/editor/:id', (req, res) => {
+      const actualPage = '/editor'
       const queryParams = {
         id: req.params.id
       }
