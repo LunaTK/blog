@@ -8,7 +8,7 @@ export default function Layout(props: any) {
       <article id="article">{props.children}</article>
       <style jsx global>
         {`
-          @import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500');
+          @import url('https://fonts.googleapis.com/css?family=Quicksand:300,500');
 
           body {
             margin: 0;
@@ -19,7 +19,7 @@ export default function Layout(props: any) {
         {`
           #article {
             padding: 10px;
-            max-width: 768px;
+            max-width: 1024px;
             margin: auto;
           }
         `}

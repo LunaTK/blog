@@ -16,16 +16,17 @@ class MyApp extends App {
     return (
       <Container>
         <Head>
+          <title>LunaTK's Blog</title>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.2.10/webcomponents-bundle.js" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
             key="viewport"
           />
-        </Head>{' '}
+        </Head>
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />{' '}
-        </ApolloProvider>{' '}
+          <Component {...pageProps} />
+        </ApolloProvider>
       </Container>
     );
   }

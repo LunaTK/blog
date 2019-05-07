@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
 import ReactMarkdown from 'react-markdown';
+import Head from 'next/head';
 
 /**
  * Typing Apollo
@@ -37,10 +38,15 @@ function Post(props) {
           return <div>Loading</div>;
         } else if (post) {
           return (
-            <div>
-              <h1>{post.title}</h1>
-              <ReactMarkdown source={post.content} />
-            </div>
+            <>
+              <Head>
+                <title>{`${post.title} - LunaTK`}</title>
+              </Head>
+              <div>
+                <h1>{post.title}</h1>
+                <ReactMarkdown source={post.content} />
+              </div>
+            </>
           );
         }
         return <Error statusCode={404} />;

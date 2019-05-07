@@ -17,6 +17,9 @@ function Navbar() {
   return (
     <nav>
       <div id="nav-content">
+        <Link href="/">
+          <span id="logo">LunaTK</span>
+        </Link>
         <button
           onClick={() => {
             setMenuVisible(!menuVisible);
@@ -32,7 +35,7 @@ function Navbar() {
         </button>
         <div id="menu-box" className={`${menuVisible ? 'open' : ''}`}>
           {menus.map(m => (
-            <Link href={m.href} key={m.title}>
+            <Link prefetch href={m.href} key={m.title}>
               <a className="menu">{m.title} </a>
             </Link>
           ))}
@@ -47,15 +50,26 @@ function Navbar() {
           height: 100%;
           width: 100%;
           align-items: center;
-          padding: 0 5px;
+          padding: 0 15px;
           box-sizing: border-box;
+          display: flex;
+        }
+
+        #logo {
+          font-family: 'Quicksand', sans-serif;
+          font-weight: 500;
+          font-size: 24px;
+          cursor: pointer;
+          color: #222220;
         }
 
         #menu-box {
+          justify-content: end;
           height: 100%;
-          display: grid;
+          display: inline-grid;
           grid-template-columns: repeat(auto-fit, minmax(100px, max-content));
           align-items: center;
+          flex: 1;
         }
 
         nav {
@@ -74,7 +88,7 @@ function Navbar() {
         a {
           color: #404040;
           text-decoration: none;
-          margin: 0 40px 0 0;
+          margin: 0 0 0 40px;
           transition: transform 0.3s, text-shadow 0.3s;
         }
 
