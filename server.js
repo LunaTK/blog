@@ -62,6 +62,9 @@ const resolvers = {
       } = args;
       return mongo.db('blog').collection('post')
         .find({}, graphqlMongodbProjection(info))
+        .sort({
+          _id: -1
+        })
         .skip(skip)
         .limit(limit)
         .toArray();
