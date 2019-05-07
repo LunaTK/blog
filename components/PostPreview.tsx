@@ -5,15 +5,16 @@ import Link from 'next/link';
 export interface PostPreviewProps {
   pid: number;
   title: string;
-  content: string;
+  content?: string;
 }
 
 const PostPreview = (props: PostPreviewProps) => {
   return (
     <Link href={`/post/${props.pid}`}>
       <div id="box">
-        <h1>{props.title}</h1>
-        <p>{props.content}</p>
+        <h1>
+          {props.pid}. {props.title}
+        </h1>
         <style jsx>{`
           #box {
             border: 1px solid black;

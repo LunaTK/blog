@@ -12,7 +12,6 @@ export const allPostsQuery = gql`
   query {
     posts {
       title
-      content
       _id
     }
   }
@@ -31,12 +30,7 @@ export default function posts() {
           return (
             <div>
               {posts.map(post => (
-                <PostPreview
-                  title={post.title}
-                  content={post.content}
-                  pid={post._id}
-                  key={post._id}
-                />
+                <PostPreview title={post.title} pid={post._id} key={post._id} />
               ))}
             </div>
           );
