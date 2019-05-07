@@ -6,7 +6,7 @@ import Post from '../components/Post';
 const post = withRouter(props => {
   return (
     <Layout>
-      <Post postId={(props.router.query as any).id} />
+      <Post postId={props.router!.query!.id} />
     </Layout>
   );
 });

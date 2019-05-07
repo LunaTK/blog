@@ -2,14 +2,11 @@ import * as React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
-import ReactMarkdown from 'react-markdown';
 import Head from 'next/head';
 import 'github-markdown-css/github-markdown.css';
-import hljs from 'highlight.js';
-import { useEffect } from 'react';
 import marked from '../lib/marked';
 import 'highlight.js/styles/tomorrow.css';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
 /**
  * Typing Apollo
  * https://www.apollographql.com/docs/react/recipes/static-typing
@@ -41,7 +38,7 @@ function Post(props) {
           if (error) {
             return <div>Error!</div>;
           } else if (loading) {
-            return <div>Loading</div>;
+            return <LinearProgress />;
           } else if (post) {
             return (
               <>
