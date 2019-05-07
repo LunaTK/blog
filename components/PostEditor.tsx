@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic';
 // import { Query, ApolloConsumer, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
-import Head from 'next/head';
 import { Post } from './Post';
 import { useState } from 'react';
 import { Mutation } from 'react-apollo';
@@ -13,8 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import withMobileDialog from '@material-ui/core/withMobileDialog';
-import { any } from 'prop-types';
+import TextField from '@material-ui/core/TextField';
 import Router from 'next/router';
 
 export interface ForEditorProps {
@@ -61,6 +59,17 @@ const PostEditor = props => {
             <>
               <button id="upload_widget">Upload files</button>
               <button id="my_btn">my btn</button>
+              <TextField
+                id="outlined-name"
+                label="Title"
+                value={title}
+                onChange={event => {
+                  setTitle(event.target.value);
+                }}
+                margin="normal"
+                variant="outlined"
+                fullWidth
+              />
               <ForEditor
                 placeholder=""
                 value={content}
