@@ -28,7 +28,7 @@ const typeDefs = gql `
     post(id: Int!): Post
   }
   input PostI {
-    _id: Int!
+    _id: Int # null means new post
     title: String!
     content: String!
   }
@@ -49,6 +49,7 @@ const typeDefs = gql `
   type UpsertResult {
     modifiedCount: Int
     upsertedCount: Int
+    _id: Int
   }
 `;
 
@@ -77,6 +78,15 @@ const resolvers = {
     upsertPost: async (_, {
       post
     }) => {
+      async function getRecentId() {
+        const recent = await mongo.db('blog').collection('post').find().sort([
+          ['_id', -1]
+        ]).limit(1).toArray();
+        return recent[0]._id;
+      }
+      if (!post._id) {
+        post._id = await getRecentId() + 1;
+      }
       return mongo.db('blog').collection('post').updateOne({
         _id: post._id
       }, {
@@ -84,12 +94,15 @@ const resolvers = {
       }, {
         upsert: true
       }).then(({
-        modifiedCount,
-        upsertedCount
-      }) => {
-        modifiedCount,
-        upsertedCount
-      });
+          modifiedCount,
+          upsertedCount
+        }) =>
+        ({
+          modifiedCount,
+          upsertedCount,
+          _id: post._id
+        })
+      );
     }
   },
   Post: {},
