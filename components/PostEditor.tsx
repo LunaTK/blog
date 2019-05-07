@@ -1,8 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import dynamic from 'next/dynamic';
 // import { Query, ApolloConsumer, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
+import Head from 'next/head';
 import { Post } from './Post';
 import { useState } from 'react';
 import { Mutation } from 'react-apollo';
@@ -13,12 +14,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+import { any } from 'prop-types';
+import Router from 'next/router';
 
 export interface ForEditorProps {
   placeholder: string;
   value: string;
   onChange: React.Dispatch<React.SetStateAction<string>>;
   onSave: () => any;
+}
+
+declare global {
+  interface Window {
+    cloudinary: any;
+    ml: any;
+  }
 }
 
 const UPDATE_POST = gql`
@@ -45,56 +55,59 @@ const PostEditor = props => {
     const [title, setTitle] = useState(post.title);
     const [dialog, setDialog] = useState(false);
     return (
-      <UpdatePostMutation mutation={UPDATE_POST}>
-        {(upsertPost, { data }) => (
-          <>
-            <ForEditor
-              placeholder=""
-              value={content}
-              onChange={setContent}
-              onSave={() => {
-                setDialog(true);
-              }}
-            />
-            <Dialog
-              fullScreen={false}
-              open={dialog}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogTitle id="responsive-dialog-title">
-                {'Update post?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  The post will be updated. It cannot be undo.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setDialog(false);
-                  }}
-                  color="secondary"
-                >
-                  No
-                </Button>
-                <Button
-                  onClick={() => {
-                    upsertPost({
-                      variables: { post: { _id: post._id, title, content } }
-                    });
-                    setDialog(false);
-                  }}
-                  color="primary"
-                  autoFocus
-                >
-                  Yes
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </>
-        )}
-      </UpdatePostMutation>
+      <>
+        <UpdatePostMutation mutation={UPDATE_POST}>
+          {(upsertPost, { data }) => (
+            <>
+              <button id="upload_widget">Upload files</button>
+              <button id="my_btn">my btn</button>
+              <ForEditor
+                placeholder=""
+                value={content}
+                onChange={setContent}
+                onSave={() => {
+                  setDialog(true);
+                }}
+              />
+              <Dialog
+                fullScreen={false}
+                open={dialog}
+                aria-labelledby="responsive-dialog-title"
+              >
+                <DialogTitle id="responsive-dialog-title">
+                  {'Update post?'}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    The post will be updated. It cannot be undo.
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      setDialog(false);
+                    }}
+                    color="secondary"
+                  >
+                    No
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      upsertPost({
+                        variables: { post: { _id: post._id, title, content } }
+                      }).then(() => Router.push(`/post/${post._id}`));
+                    }}
+                    color="primary"
+                    autoFocus
+                  >
+                    Yes
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </>
+          )}
+        </UpdatePostMutation>
+      </>
     );
   } else {
     return <Error statusCode={404} />;
