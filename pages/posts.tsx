@@ -26,7 +26,6 @@ export default function posts() {
           } else if (loading) {
             return <div>Loading</div>;
           }
-          console.log(posts);
           return (
             <div>
               {posts.map(post => (
@@ -34,6 +33,7 @@ export default function posts() {
                   title={post.title}
                   content={post.content}
                   pid={post._id}
+                  key={post._id}
                 />
               ))}
             </div>
