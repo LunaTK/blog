@@ -10,8 +10,8 @@ export interface PostPreviewProps {
 
 const PostPreview = (props: PostPreviewProps) => {
   return (
-    <Link>
-      <a href={`/post/${props.pid}`} id="box">
+    <Link href={`/post/${props.pid}`}>
+      <div id="box">
         <h1>{props.title}</h1>
         <p>{props.content}</p>
         <style jsx>{`
@@ -19,6 +19,8 @@ const PostPreview = (props: PostPreviewProps) => {
             border: 1px solid black;
             transition: all 0.3s;
             cursor: pointer;
+            box-sizing: border-box;
+            margin: 5px;
           }
 
           #box:hover {
@@ -26,7 +28,7 @@ const PostPreview = (props: PostPreviewProps) => {
             transform: scale(1.01);
           }
         `}</style>
-      </a>
+      </div>
     </Link>
   );
 };
