@@ -44,7 +44,7 @@ function Navbar() {
       <style jsx>{`
         #nav-content {
           font-family: 'Quicksand', sans-serif;
-          max-width: 768px;
+          max-width: 1024px;
           margin: auto;
           position: relative;
           height: 100%;
