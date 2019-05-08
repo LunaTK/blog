@@ -34,6 +34,7 @@ const UPDATE_POST = gql`
     upsertPost(post: $post) {
       modifiedCount
       upsertedCount
+      _id
     }
   }
 `;
@@ -45,12 +46,16 @@ const ForEditor = dynamic<ForEditorProps>(() => import('for-editor'), {
   ssr: false
 });
 
+export interface PostEditorProps {
+  post: Post;
+}
+
 // class PostQuery extends Query<any, any> {}
-const PostEditor = props => {
+const PostEditor = (props: PostEditorProps) => {
   const post: Post = props.post;
   if (post) {
-    const [content, setContent] = useState(post.content);
-    const [title, setTitle] = useState(post.title);
+    const [content, setContent] = useState(post.content!);
+    const [title, setTitle] = useState(post.title!);
     const [dialog, setDialog] = useState(false);
     return (
       <>
@@ -104,7 +109,11 @@ const PostEditor = props => {
                     onClick={() => {
                       upsertPost({
                         variables: { post: { _id: post._id, title, content } }
-                      }).then(() => Router.push(`/post/${post._id}`));
+                      }).then(result => {
+                        Router.push(
+                          `/post/${(result as any).data.upsertPost._id}`
+                        );
+                      });
                     }}
                     color="primary"
                     autoFocus

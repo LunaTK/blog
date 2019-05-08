@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Post } from './Post';
 
@@ -53,11 +52,6 @@ const PostPreview = (props: PostPreviewProps) => {
       </div>
     </Link>
   );
-};
-
-PostPreview.propTypes = {
-  title: PropTypes.string,
-  content: PropTypes.string
 };
 
 export default PostPreview;

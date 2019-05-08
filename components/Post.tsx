@@ -13,10 +13,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
  */
 
 export interface Post {
-  _id: number;
+  _id?: number;
   title: string;
-  content: string;
-  preview: string;
+  content?: string;
+  preview?: string;
 }
 
 export const postQuery = gql`
@@ -31,6 +31,7 @@ export const postQuery = gql`
 class PostQuery extends Query<any, any> {}
 
 function Post(props) {
+  if (isNaN(props.postId)) return <Error statusCode={400} />;
   const pid = Number(props.postId);
   return (
     <>
