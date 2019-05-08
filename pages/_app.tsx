@@ -22,6 +22,10 @@ class MyApp extends App {
             content="width=device-width, initial-scale=1.0"
             key="viewport"
           />
+          <meta
+            name="google-site-verification"
+            content="7hQbtHrsfZArCdE8Vealbr7etVW2RL93-dPKI5Kcygg"
+          />
           <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
         </Head>
         <ApolloProvider client={apolloClient}>

@@ -1,32 +1,53 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { Post } from './Post';
 
 export interface PostPreviewProps {
-  pid: number;
-  title: string;
-  content?: string;
+  post: Post;
 }
 
 const PostPreview = (props: PostPreviewProps) => {
+  const { post } = props;
   return (
-    <Link href={`/post/${props.pid}`}>
-      <div id="box">
-        <h1>
-          {props.pid}. {props.title}
-        </h1>
+    <Link href={`/post/${post._id}`}>
+      <div className="box">
+        <h3>
+          {post._id}. {post.title}
+        </h3>
+        <p className="preview">{post.preview}</p>
         <style jsx>{`
-          #box {
-            border: 1px solid black;
+          .box {
             transition: all 0.3s;
             cursor: pointer;
             box-sizing: border-box;
-            margin: 5px;
+            position: relative;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
           }
 
-          #box:hover {
+          .box > * {
+            margin: 0;
+          }
+
+          .box > *:first-child {
+            margin-bottom: 5px !important;
+          }
+
+          .box:hover {
             box-shadow: 3px 3px 0 #22222222;
             transform: scale(1.01);
+            background: #00000007;
+          }
+
+          .preview {
+            word-break: keep-all;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            box-sizing: border-box;
+            margin-left: 2em !important;
           }
         `}</style>
       </div>

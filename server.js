@@ -1,6 +1,7 @@
 const express = require('express');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
+const removeMd = require('./lib/remove-markdown');
 const {
   graphqlMongodbProjection
 } = require('graphql-mongodb-projection');
@@ -38,6 +39,7 @@ const typeDefs = gql `
   type Post {
     title: String
     content: String
+    preview: String
     date: String
     comments: [Comment]
     _id: Int
@@ -90,6 +92,10 @@ const resolvers = {
       if (!post._id) {
         post._id = await getRecentId() + 1;
       }
+      post.preview = removeMd(post.content, {
+        useImgAltText: false
+      }).slice(0, 200);
+
       return mongo.db('blog').collection('post').updateOne({
         _id: post._id
       }, {
