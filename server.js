@@ -43,6 +43,8 @@ const typeDefs = gql `
     date: String
     comments: [Comment]
     _id: Int
+    isNotion: Boolean
+    notion: String
   }
   type Comment {
     author: String

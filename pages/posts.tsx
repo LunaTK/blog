@@ -14,6 +14,8 @@ export const allPostsQuery = gql`
       title
       preview
       _id
+      isNotion
+      notion
     }
   }
 `;

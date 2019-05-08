@@ -17,6 +17,8 @@ export interface Post {
   title: string;
   content?: string;
   preview?: string;
+  isNotion?: boolean;
+  notion?: string;
 }
 
 export const postQuery = gql`

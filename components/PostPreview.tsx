@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Post } from './Post';
+import { withRouter } from 'next/router';
 
 export interface PostPreviewProps {
   post: Post;
@@ -9,13 +10,29 @@ export interface PostPreviewProps {
 const PostPreview = (props: PostPreviewProps) => {
   const { post } = props;
   return (
-    <Link href={`/post/${post._id}`}>
-      <div className="box">
-        <h3>
-          {post._id}. {post.title}
-        </h3>
-        <p className="preview">{post.preview}</p>
+    // <Link href={'https://google.com'}>
+    <Link href={post.isNotion ? post.notion : `/post/${post._id}`}>
+      <a
+        style={{ textDecoration: 'none', color: 'black' }}
+        target={post.isNotion ? '_blank' : ''}
+      >
+        <div className="box">
+          <h3 className="title">
+            {post._id}. {post.title}
+          </h3>
+          {!post.isNotion && <p className="preview">{post.preview}</p>}
+          {post.isNotion && (
+            <img
+              style={{ display: 'inline' }}
+              width="32"
+              src="/static/notion.png"
+            />
+          )}
+        </div>
         <style jsx>{`
+          a {
+            text-decoration: none;
+          }
           .box {
             transition: all 0.3s;
             cursor: pointer;
@@ -40,18 +57,25 @@ const PostPreview = (props: PostPreviewProps) => {
             background: #00000007;
           }
 
-          .preview {
+          .preview,
+          .title {
             word-break: keep-all;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
             box-sizing: border-box;
+          }
+          .preview {
             margin-left: 2em !important;
           }
+
+          h3 {
+            display: inline-block;
+          }
         `}</style>
-      </div>
+      </a>
     </Link>
   );
 };
 
-export default PostPreview;
+export default withRouter(PostPreview);
