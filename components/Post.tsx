@@ -45,7 +45,7 @@ const Post: FunctionComponent<PostProps> = props => {
     <>
       {(() => {
         if (error) {
-          return <div>Error!</div>;
+          return <div>{error}</div>;
         } else if (loading) {
           return <LinearProgress />;
         } else if (data) {

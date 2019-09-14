@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import dynamic from 'next/dynamic';
 // import { Query, ApolloConsumer, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -39,19 +39,17 @@ const UPDATE_POST = gql`
   }
 `;
 
-class UpdatePostMutation extends Mutation<any, any> {}
-
 // https://github.com/kkfor/for-editor
-const ForEditor = dynamic<ForEditorProps>(() => import('for-editor'), {
+const ForEditor = dynamic<any>(() => import('for-editor'), {
   ssr: false
 });
 
-export interface PostEditorProps {
+export type PostEditorProps = {
   post: Post;
-}
+};
 
 // class PostQuery extends Query<any, any> {}
-const PostEditor = (props: PostEditorProps) => {
+const PostEditor: FunctionComponent<PostEditorProps> = props => {
   const post: Post = props.post;
   if (post) {
     const [content, setContent] = useState(post.content!);
@@ -59,8 +57,8 @@ const PostEditor = (props: PostEditorProps) => {
     const [dialog, setDialog] = useState(false);
     return (
       <>
-        <UpdatePostMutation mutation={UPDATE_POST}>
-          {(upsertPost, { data }) => (
+        <Mutation mutation={UPDATE_POST}>
+          {(upsertPost, _) => (
             <>
               <button id="upload_widget">Upload files</button>
               <button id="my_btn">my btn</button>
@@ -83,18 +81,10 @@ const PostEditor = (props: PostEditorProps) => {
                   setDialog(true);
                 }}
               />
-              <Dialog
-                fullScreen={false}
-                open={dialog}
-                aria-labelledby="responsive-dialog-title"
-              >
-                <DialogTitle id="responsive-dialog-title">
-                  {'Update post?'}
-                </DialogTitle>
+              <Dialog fullScreen={false} open={dialog} aria-labelledby="responsive-dialog-title">
+                <DialogTitle id="responsive-dialog-title">{'Update post?'}</DialogTitle>
                 <DialogContent>
-                  <DialogContentText>
-                    The post will be updated. It cannot be undo.
-                  </DialogContentText>
+                  <DialogContentText>The post will be updated. It cannot be undo.</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                   <Button
@@ -110,9 +100,7 @@ const PostEditor = (props: PostEditorProps) => {
                       upsertPost({
                         variables: { post: { _id: post._id, title, content } }
                       }).then(result => {
-                        Router.push(
-                          `/post/${(result as any).data.upsertPost._id}`
-                        );
+                        Router.push(`/post/${(result as any).data.upsertPost._id}`);
                       });
                     }}
                     color="primary"
@@ -124,7 +112,7 @@ const PostEditor = (props: PostEditorProps) => {
               </Dialog>
             </>
           )}
-        </UpdatePostMutation>
+        </Mutation>
       </>
     );
   } else {

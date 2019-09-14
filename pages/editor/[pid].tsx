@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { NextPage } from 'next';
 import { useQuery } from 'react-apollo';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Error from 'next/error';
 
 const editor: NextPage = () => {
   const router = useRouter();
@@ -20,14 +22,18 @@ const editor: NextPage = () => {
     }
   `;
 
-  // const { loading, error, data } = useQuery(postQuery);
-  const { data } = useQuery(postQuery);
+  const { loading, data } = useQuery(postQuery);
 
-  return (
-    <Layout>
-      <PostEditor post={data.post} />
-    </Layout>
-  );
+  if (loading) {
+    return <LinearProgress></LinearProgress>;
+  } else if (data) {
+    return (
+      <Layout>
+        <PostEditor post={data.post} />
+      </Layout>
+    );
+  }
+  return <Error statusCode={404}></Error>;
 };
 
 export default editor;
