@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Query } from 'react-apollo';
+import React, { FunctionComponent } from 'react';
+import { useQuery } from 'react-apollo';
 import gql from 'graphql-tag';
 import Error from 'next/error';
 import Head from 'next/head';
@@ -30,38 +30,40 @@ export const postQuery = gql`
   }
 `;
 
-class PostQuery extends Query<any, any> {}
+type PostProps = {
+  postId: string;
+};
 
-function Post(props) {
-  if (isNaN(props.postId)) return <Error statusCode={400} />;
+const Post: FunctionComponent<PostProps> = props => {
   const pid = Number(props.postId);
+  if (!pid) return <Error statusCode={400} />;
+  const { loading, error, data } = useQuery(postQuery, {
+    variables: { pid }
+  });
+
   return (
     <>
-      <PostQuery query={postQuery} variables={{ pid }}>
-        {({ loading, error, data: { post } }) => {
-          if (error) {
-            return <div>Error!</div>;
-          } else if (loading) {
-            return <LinearProgress />;
-          } else if (post) {
-            return (
-              <>
-                <Head>
-                  <title>{`${post.title} - LunaTK`}</title>
-                </Head>
-                <div>
-                  <h1>{post.title}</h1>
-                  <div
-                    className="markdown-body"
-                    dangerouslySetInnerHTML={{ __html: marked(post.content) }}
-                  />
-                </div>
-              </>
-            );
-          }
-          return <Error statusCode={404} />;
-        }}
-      </PostQuery>
+      {(() => {
+        if (error) {
+          return <div>Error!</div>;
+        } else if (loading) {
+          return <LinearProgress />;
+        } else if (data) {
+          const post = data.post;
+          return (
+            <>
+              <Head>
+                <title>{`${post.title} - LunaTK`}</title>
+              </Head>
+              <div>
+                <h1>{post.title}</h1>
+                <div className="markdown-body" dangerouslySetInnerHTML={{ __html: marked(post.content) }} />
+              </div>
+            </>
+          );
+        }
+        return <Error statusCode={404} />;
+      })()}
       <style jsx global>
         {`
           img {
@@ -72,6 +74,6 @@ function Post(props) {
       </style>
     </>
   );
-}
+};
 
 export default Post;

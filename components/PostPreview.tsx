@@ -1,33 +1,23 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Link from 'next/link';
 import { Post } from './Post';
-import { withRouter } from 'next/router';
 
-export interface PostPreviewProps {
+export type PostPreviewProps = {
   post: Post;
-}
+};
 
-const PostPreview = (props: PostPreviewProps) => {
+const PostPreview: FunctionComponent<PostPreviewProps> = props => {
   const { post } = props;
+
   return (
-    // <Link href={'https://google.com'}>
-    <Link href={post.isNotion ? post.notion : `/post/${post._id}`}>
-      <a
-        style={{ textDecoration: 'none', color: 'black' }}
-        target={post.isNotion ? '_blank' : ''}
-      >
+    <Link href={post.isNotion ? post.notion! : '/post/[pid]'} as={post.isNotion ? '' : `/post/${post._id}`} prefetch={post.isNotion ? false : true}>
+      <a style={{ textDecoration: 'none', color: 'black' }} target={post.isNotion ? '_blank' : ''}>
         <div className="box">
           <h3 className="title">
             {post._id}. {post.title}
           </h3>
           {!post.isNotion && <p className="preview">{post.preview}</p>}
-          {post.isNotion && (
-            <img
-              style={{ display: 'inline' }}
-              width="32"
-              src="/static/notion.png"
-            />
-          )}
+          {post.isNotion && <img style={{ display: 'inline' }} width="32" src="/static/notion.png" />}
         </div>
         <style jsx>{`
           a {
@@ -78,4 +68,4 @@ const PostPreview = (props: PostPreviewProps) => {
   );
 };
 
-export default withRouter(PostPreview);
+export default PostPreview;

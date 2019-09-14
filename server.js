@@ -2,19 +2,15 @@ const express = require('express');
 const next = require('next');
 const dev = process.env.NODE_ENV !== 'production';
 const removeMd = require('./lib/remove-markdown');
-const {
-  graphqlMongodbProjection
-} = require('graphql-mongodb-projection');
+const { graphqlMongodbProjection } = require('graphql-mongodb-projection');
 if (dev) {
   require('dotenv').config();
 }
-const {
-  ApolloServer,
-  gql
-} = require('apollo-server-express');
+const { ApolloServer, gql } = require('apollo-server-express');
 const MongoClient = require('mongodb').MongoClient;
 const mongo = new MongoClient(process.env.MONGO_URL, {
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
 
 const app = next({
@@ -22,9 +18,9 @@ const app = next({
 });
 const handle = app.getRequestHandler();
 
-const typeDefs = gql `
+const typeDefs = gql`
   type Query {
-    posts(skip: Int = 0, limit:Int = 10): [Post]
+    posts(skip: Int = 0, limit: Int = 10): [Post]
 
     post(id: Int!): Post
   }
@@ -60,11 +56,10 @@ const typeDefs = gql `
 const resolvers = {
   Query: {
     posts: (root, args, ctx, info) => {
-      const {
-        skip,
-        limit
-      } = args;
-      return mongo.db('blog').collection('post')
+      const { skip, limit } = args;
+      return mongo
+        .db('blog')
+        .collection('post')
         .find({}, graphqlMongodbProjection(info))
         .sort({
           _id: -1
@@ -75,45 +70,52 @@ const resolvers = {
     },
 
     post: (root, args) => {
-      return mongo.db('blog').collection('post')
+      return mongo
+        .db('blog')
+        .collection('post')
         .findOne({
           _id: args.id
-        })
+        });
     }
   },
   Mutation: {
-    upsertPost: async (_, {
-      post
-    }) => {
+    upsertPost: async (_, { post }) => {
       async function getRecentId() {
-        const recent = await mongo.db('blog').collection('post').find().sort([
-          ['_id', -1]
-        ]).limit(1).toArray();
+        const recent = await mongo
+          .db('blog')
+          .collection('post')
+          .find()
+          .sort([['_id', -1]])
+          .limit(1)
+          .toArray();
         return recent[0]._id;
       }
       if (!post._id) {
-        post._id = await getRecentId() + 1;
+        post._id = (await getRecentId()) + 1;
       }
       post.preview = removeMd(post.content, {
         useImgAltText: false
       }).slice(0, 200);
 
-      return mongo.db('blog').collection('post').updateOne({
-        _id: post._id
-      }, {
-        $set: post
-      }, {
-        upsert: true
-      }).then(({
-          modifiedCount,
-          upsertedCount
-        }) =>
-        ({
+      return mongo
+        .db('blog')
+        .collection('post')
+        .updateOne(
+          {
+            _id: post._id
+          },
+          {
+            $set: post
+          },
+          {
+            upsert: true
+          }
+        )
+        .then(({ modifiedCount, upsertedCount }) => ({
           modifiedCount,
           upsertedCount,
           _id: post._id
-        })
-      );
+        }));
     }
   },
   Post: {},
@@ -125,34 +127,17 @@ const apolloServer = new ApolloServer({
   resolvers
 });
 
-
 app
   .prepare()
   .then(() => {
     const server = express();
     mongo.connect(err => {
-      if (err) console.log(err)
+      if (err) console.log(err);
     });
     apolloServer.applyMiddleware({
       app: server
     });
     const port = process.env.PORT || 3000;
-
-    server.get('/post/:id', (req, res) => {
-      const actualPage = '/post'
-      const queryParams = {
-        id: req.params.id
-      }
-      app.render(req, res, actualPage, queryParams)
-    })
-
-    server.get('/editor/:id', (req, res) => {
-      const actualPage = '/editor'
-      const queryParams = {
-        id: req.params.id
-      }
-      app.render(req, res, actualPage, queryParams)
-    })
 
     server.get('*', (req, res) => {
       return handle(req, res);

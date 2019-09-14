@@ -6,14 +6,12 @@ import './hamburgers-settings.scss';
 interface Menu {
   title: string;
   href: string;
+  prefetch?: boolean;
 }
 
 function Navbar() {
   const [menuVisible, setMenuVisible] = useState(false);
-  const menus: Menu[] = [
-    { title: 'About', href: 'https://lunatk.github.io' },
-    { title: 'Posts', href: '/posts' }
-  ];
+  const menus: Menu[] = [{ title: 'About', href: 'https://lunatk.github.io', prefetch: false }, { title: 'Posts', href: '/posts' }];
   return (
     <nav>
       <div id="nav-content">
@@ -24,9 +22,7 @@ function Navbar() {
           onClick={() => {
             setMenuVisible(!menuVisible);
           }}
-          className={`hamburger hamburger--collapse ${
-            menuVisible ? 'is-active' : ''
-          }`}
+          className={`hamburger hamburger--collapse ${menuVisible ? 'is-active' : ''}`}
           type="button"
         >
           <span className="hamburger-box">
@@ -35,7 +31,7 @@ function Navbar() {
         </button>
         <div id="menu-box" className={`${menuVisible ? 'open' : ''}`}>
           {menus.map(m => (
-            <Link prefetch href={m.href} key={m.title}>
+            <Link href={m.href} key={m.title} prefetch={m.prefetch === undefined ? true : m.prefetch}>
               <a className="menu">{m.title} </a>
             </Link>
           ))}
